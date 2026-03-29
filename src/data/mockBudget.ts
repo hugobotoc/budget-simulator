@@ -113,35 +113,158 @@ export const mockBudget: Budget = {
 export const mockProposals = [
   {
     id: 'prop-1',
-    title: 'Universal Healthcare',
-    description: 'Expand healthcare coverage to all US citizens. Would replace Medicare/Medicaid system.',
+    title: 'Universal Healthcare System',
+    description: 'Replace Medicare and Medicaid with a single-payer universal healthcare system. Would expand coverage to all US citizens.',
     impact: [
-      { categoryId: 'medicare', changePercent: 50, description: 'Merged into new universal system' },
-      { categoryId: 'medicaid', changePercent: -100, description: 'Replaced by universal coverage' },
-      { categoryId: 'defense', changePercent: 0 }
+      { categoryId: 'medicare', changePercent: 150, estimatedCost: 800, description: 'Expanded universal coverage' },
+      { categoryId: 'medicaid', changePercent: -100, estimatedCost: -616, description: 'Merged into universal system' }
     ],
-    createdAt: new Date(),
+    createdAt: new Date('2024-01-15'),
     author: 'Democratic Platform'
   },
   {
     id: 'prop-2',
-    title: 'Increase Defense Spending',
-    description: 'Boost military budget by 15% for enhanced readiness.',
+    title: 'Increase Defense Spending 15%',
+    description: 'Boost military budget for enhanced readiness, personnel, equipment modernization, and cyber defense capabilities.',
     impact: [
-      { categoryId: 'defense', changePercent: 15, description: 'Personnel, equipment, modernization' }
+      { categoryId: 'defense', changePercent: 15, estimatedCost: 123, description: 'Personnel, equipment, modernization' }
     ],
-    createdAt: new Date(),
+    createdAt: new Date('2024-02-01'),
     author: 'Republican Platform'
   },
   {
     id: 'prop-3',
-    title: 'Green Energy Transition',
-    description: 'Invest $500B over 5 years in renewable energy and clean infrastructure.',
+    title: 'Green Energy Transition Fund',
+    description: 'Invest $500B over 10 years in renewable energy infrastructure, electric vehicle networks, and clean technology R&D.',
     impact: [
-      { categoryId: 'infrastructure', changePercent: 100, description: 'Renewable energy projects' },
-      { categoryId: 'science', changePercent: 50, description: 'Clean tech R&D' }
+      { categoryId: 'infrastructure', changePercent: 100, estimatedCost: 206, description: 'Renewable energy projects' },
+      { categoryId: 'science', changePercent: 75, estimatedCost: 145, description: 'Clean tech R&D' }
     ],
-    createdAt: new Date(),
+    createdAt: new Date('2024-01-20'),
     author: 'Green Party'
+  },
+  {
+    id: 'prop-4',
+    title: 'Defense Spending Reduction 10%',
+    description: 'Cut defense spending by 10% through reduced military operations abroad, consolidation of bases, and efficiency improvements.',
+    impact: [
+      { categoryId: 'defense', changePercent: -10, estimatedCost: -82, description: 'Reduced overseas operations and consolidation' }
+    ],
+    createdAt: new Date('2024-02-05'),
+    author: 'Progressive Coalition'
+  },
+  {
+    id: 'prop-5',
+    title: 'Social Security Expansion',
+    description: 'Increase Social Security benefits by 25% for seniors living below the poverty line. Target: improve retirement security.',
+    impact: [
+      { categoryId: 'social-security', changePercent: 20, estimatedCost: 269, description: 'Enhanced benefits for low-income seniors' }
+    ],
+    createdAt: new Date('2024-01-25'),
+    author: 'Democratic Platform'
+  },
+  {
+    id: 'prop-6',
+    title: 'Medicare for All Ages',
+    description: 'Expand Medicare eligibility to all Americans regardless of age. Replaces private insurance system.',
+    impact: [
+      { categoryId: 'medicare', changePercent: 200, estimatedCost: 1696, description: 'Universal Medicare coverage' },
+      { categoryId: 'medicaid', changePercent: -100, estimatedCost: -616, description: 'Absorbed into Medicare for All' }
+    ],
+    createdAt: new Date('2024-02-10'),
+    author: 'Progressive Coalition'
+  },
+  {
+    id: 'prop-7',
+    title: 'Infrastructure Modernization 2.0',
+    description: '$2 trillion over 8 years for roads, bridges, rail, ports, and broadband expansion. Create 4M jobs.',
+    impact: [
+      { categoryId: 'infrastructure', changePercent: 400, estimatedCost: 824, description: 'Roads, bridges, rail, broadband' },
+      { categoryId: 'education', changePercent: 50, estimatedCost: 119, description: 'STEM training programs' }
+    ],
+    createdAt: new Date('2024-02-08'),
+    author: 'Bipartisan Coalition'
+  },
+  {
+    id: 'prop-8',
+    title: 'K-12 Education Investment',
+    description: 'Increase federal education funding by 50%. Focus on under-resourced schools, teacher salaries, and STEM programs.',
+    impact: [
+      { categoryId: 'education', changePercent: 50, estimatedCost: 119, description: 'Teacher salaries, school infrastructure, STEM' }
+    ],
+    createdAt: new Date('2024-01-30'),
+    author: 'Teachers Union'
+  },
+  {
+    id: 'prop-9',
+    title: 'Veterans Benefits Increase',
+    description: 'Increase veterans benefits by 30%. Cover mental health services, housing support, and job training programs.',
+    impact: [
+      { categoryId: 'veterans', changePercent: 30, estimatedCost: 90, description: 'Mental health, housing, job training' }
+    ],
+    createdAt: new Date('2024-02-12'),
+    author: 'Veterans Advocacy Group'
+  },
+  {
+    id: 'prop-10',
+    title: 'Net Interest on Debt Reduction',
+    description: 'Deficit reduction measures to lower debt servicing costs over time. Includes modest revenue increases.',
+    impact: [
+      { categoryId: 'interest', changePercent: -15, estimatedCost: -99, description: 'Deficit reduction measures' }
+    ],
+    createdAt: new Date('2024-02-14'),
+    author: 'Fiscal Conservatives'
+  },
+  {
+    id: 'prop-11',
+    title: 'Medicaid Expansion',
+    description: 'Expand Medicaid eligibility to 400% of federal poverty level. Covers 15M additional Americans.',
+    impact: [
+      { categoryId: 'medicaid', changePercent: 50, estimatedCost: 308, description: 'Expanded coverage for working families' }
+    ],
+    createdAt: new Date('2024-01-28'),
+    author: 'Healthcare Advocates'
+  },
+  {
+    id: 'prop-12',
+    title: 'Climate Research Initiative',
+    description: 'Triple federal funding for climate research and adaptation technologies. Focus on carbon capture and resilience.',
+    impact: [
+      { categoryId: 'science', changePercent: 100, estimatedCost: 193, description: 'Climate research and carbon tech' },
+      { categoryId: 'infrastructure', changePercent: 25, estimatedCost: 52, description: 'Climate-resilient infrastructure' }
+    ],
+    createdAt: new Date('2024-02-03'),
+    author: 'Climate Scientists Coalition'
+  },
+  {
+    id: 'prop-13',
+    title: 'Military Base Consolidation',
+    description: 'Close redundant military bases and consolidate operations. Reduce overhead while maintaining readiness.',
+    impact: [
+      { categoryId: 'defense', changePercent: -8, estimatedCost: -66, description: 'Base consolidation and efficiency' }
+    ],
+    createdAt: new Date('2024-02-06'),
+    author: 'Government Efficiency Task Force'
+  },
+  {
+    id: 'prop-14',
+    title: 'Housing First Initiative',
+    description: 'Federal program to provide permanent housing for homeless population. Includes supportive services.',
+    impact: [
+      { categoryId: 'other', changePercent: 15, estimatedCost: 108, description: 'Housing and supportive services' }
+    ],
+    createdAt: new Date('2024-02-11'),
+    author: 'Housing Advocates'
+  },
+  {
+    id: 'prop-15',
+    title: 'Debt Service Cost Control',
+    description: 'Comprehensive fiscal reform to stabilize debt trajectory. Includes spending controls and revenue measures.',
+    impact: [
+      { categoryId: 'interest', changePercent: -20, estimatedCost: -132, description: 'Fiscal consolidation measures' },
+      { categoryId: 'other', changePercent: -5, estimatedCost: -36, description: 'Operational efficiency' }
+    ],
+    createdAt: new Date('2024-02-15'),
+    author: 'Congressional Budget Office'
   }
 ];
