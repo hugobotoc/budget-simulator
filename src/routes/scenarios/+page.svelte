@@ -101,31 +101,34 @@
 </svelte:head>
 
 <div class="space-y-8">
-  <!-- Header -->
-  <div class="card bg-gradient-to-r from-blue-500 to-cyan-600 shadow-lg text-white">
-    <div class="card-body py-8">
-      <h1 class="card-title text-3xl">📋 Saved Scenarios</h1>
-      <p class="text-lg opacity-90">
+  <!-- Header Section -->
+  <section class="card bg-gradient-to-r from-blue-500 to-cyan-600 shadow-lg text-white">
+    <div class="card-body py-8 px-4 md:px-8">
+      <h1 class="card-title text-2xl md:text-3xl lg:text-4xl">📋 Saved Scenarios</h1>
+      <p class="text-base md:text-lg opacity-90">
         View, compare, and manage your budget scenarios. Load any scenario to continue editing.
       </p>
     </div>
-  </div>
+  </section>
 
   <!-- Actions Bar -->
   {#if scenariosState.scenarios.length > 0}
-    <div class="flex flex-wrap gap-3 items-center justify-between bg-base-200 p-4 rounded-lg">
+    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between bg-base-200 p-4 rounded-lg" role="region" aria-label="Scenario selection controls">
       <div class="text-sm">
         {#if selectedScenarios.length > 0}
-          <span class="font-semibold">{selectedScenarios.length} scenario(s) selected</span>
+          <span class="font-semibold" role="status" aria-live="polite">
+            {selectedScenarios.length} scenario{selectedScenarios.length === 1 ? '' : 's'} selected
+          </span>
         {:else}
           <span class="text-base-content/60">Select scenarios to compare</span>
         {/if}
       </div>
-      <div class="flex gap-2">
+      <div class="flex gap-2 flex-col sm:flex-row w-full sm:w-auto">
         {#if selectedScenarios.length === 2}
           <button
             onclick={handleCompare}
-            class="btn btn-primary btn-sm"
+            class="btn btn-primary btn-sm transition-all hover:scale-105 active:scale-95"
+            aria-label="Compare the two selected scenarios"
           >
             🔍 Compare
           </button>
@@ -133,7 +136,8 @@
         {#if selectedScenarios.length > 0}
           <button
             onclick={() => (selectedScenarios = [])}
-            class="btn btn-outline btn-sm"
+            class="btn btn-outline btn-sm transition-all hover:scale-105 active:scale-95"
+            aria-label="Clear selection of scenarios"
           >
             Clear Selection
           </button>
@@ -145,29 +149,34 @@
   <!-- Scenarios Grid -->
   {#if scenariosState.loaded}
     {#if scenariosState.scenarios.length === 0}
-      <div class="alert alert-info">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="stroke-current shrink-0 w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          /></svg>
-        <div>
-          <h3 class="font-bold">No scenarios yet</h3>
-          <div class="text-sm">
-            Create your first scenario by customizing the budget on the <a href="/customize" class="link link-primary">Customize</a> page
-            and saving it as a scenario.
+      <section class="space-y-4">
+        <h2 class="text-2xl md:text-3xl font-bold">Your Scenarios</h2>
+        <div class="alert alert-info" role="status">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="stroke-current shrink-0 w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            /></svg>
+          <div>
+            <h3 class="font-bold">No scenarios yet</h3>
+            <div class="text-sm">
+              Create your first scenario by customizing the budget on the <a href="/customize" class="link link-primary">Customize</a> page
+              and saving it as a scenario.
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     {:else}
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section class="space-y-4">
+        <h2 class="text-2xl md:text-3xl font-bold">Your Scenarios</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {#each scenariosState.scenarios as scenario (scenario.id)}
           {@const stats = getScenarioStats(scenario)}
           {@const isSelected = selectedScenarios.includes(scenario.id)}
@@ -185,28 +194,34 @@
             onDelete={() => handleDelete(scenario.id)}
           />
         {/each}
-      </div>
+        </div>
+      </section>
     {/if}
   {:else}
-    <div class="flex justify-center">
-      <span class="loading loading-spinner loading-lg"></span>
-    </div>
+    <section class="flex justify-center py-12">
+      <div class="text-center">
+        <span class="loading loading-spinner loading-lg mb-4"></span>
+        <p class="text-base-content/60">Loading scenarios...</p>
+      </div>
+    </section>
   {/if}
 
   <!-- Info Box -->
-  <div class="alert alert-info">
+  <section class="alert alert-info" role="region" aria-label="How to save scenarios">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       class="stroke-current shrink-0 w-6 h-6"
+      aria-hidden="true"
     >
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="2"
         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      /></svg>
+      />
+    </svg>
     <div>
       <h3 class="font-bold">How to save scenarios</h3>
       <div class="text-sm">
@@ -215,34 +230,36 @@
         "Save As Scenario" to save your current budget allocation and applied policies.
       </div>
     </div>
-  </div>
+  </section>
 </div>
 
 <!-- Delete Confirmation Modal -->
 {#if showDeleteConfirm}
-  <div class="modal modal-open">
+  <div class="modal modal-open" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
     <div class="modal-box">
-      <h3 class="font-bold text-lg">Delete Scenario?</h3>
+      <h3 class="font-bold text-lg" id="delete-modal-title">Delete Scenario?</h3>
       <p class="py-4">
         Are you sure you want to delete this scenario? This action cannot be undone.
       </p>
-      <div class="modal-action">
+      <div class="modal-action flex-col sm:flex-row gap-2">
         <button
           onclick={() => (showDeleteConfirm = false)}
-          class="btn btn-outline"
+          class="btn btn-outline transition-all hover:scale-105 active:scale-95"
+          aria-label="Cancel deletion"
         >
           Cancel
         </button>
         <button
           onclick={confirmDelete}
-          class="btn btn-error"
+          class="btn btn-error transition-all hover:scale-105 active:scale-95"
+          aria-label="Permanently delete this scenario"
         >
           Delete
         </button>
       </div>
     </div>
     <div
-      class="modal-backdrop"
+      class="modal-backdrop cursor-pointer"
       onclick={() => (showDeleteConfirm = false)}
       onkeydown={(e) => {
         if (e.key === 'Escape') {
@@ -250,7 +267,8 @@
         }
       }}
       role="button"
-      tabindex="-1"
+      tabindex="0"
+      aria-label="Close modal"
     ></div>
   </div>
 {/if}

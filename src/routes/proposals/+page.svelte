@@ -216,29 +216,29 @@
 </svelte:head>
 
 <div class="space-y-8">
-  <!-- Header -->
-  <div class="card bg-gradient-to-r from-amber-500 to-orange-600 shadow-lg text-white">
-    <div class="card-body py-8">
-      <h1 class="card-title text-3xl">⚖️ Policy Proposals Explorer</h1>
-      <p class="text-lg opacity-90">
+  <!-- Header Section -->
+  <section class="card bg-gradient-to-r from-amber-500 to-orange-600 shadow-lg text-white">
+    <div class="card-body py-8 px-4 md:px-8">
+      <h1 class="card-title text-2xl md:text-3xl lg:text-4xl">⚖️ Policy Proposals Explorer</h1>
+      <p class="text-base md:text-lg opacity-90">
         Explore realistic policy proposals and see how they would impact federal spending.
       </p>
     </div>
-  </div>
+  </section>
 
   <!-- Applied Proposals Section -->
   {#if proposalsState.appliedProposals.length > 0}
-    <div class="card bg-green-50 border-2 border-green-500 shadow-md">
+    <section class="card bg-green-50 border-2 border-green-500 shadow-md" role="region" aria-label="Applied proposals summary">
       <div class="card-body">
-        <h2 class="card-title text-green-700">
+        <h2 class="card-title text-green-700 text-lg md:text-xl">
           Applied Proposals ({proposalsState.appliedProposals.length})
         </h2>
 
         <div class="space-y-2">
           {#each proposalsState.appliedProposals as applied (applied.id)}
-            <div class="flex items-center justify-between bg-white p-3 rounded-lg border border-green-200">
-              <div class="flex-1">
-                <p class="font-semibold text-sm">{applied.title}</p>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-3 rounded-lg border border-green-200 gap-2">
+              <div class="flex-1 min-w-0">
+                <p class="font-semibold text-sm break-words">{applied.title}</p>
                 <p class="text-xs text-base-content/60">
                   Applied: {applied.appliedAt.toLocaleTimeString()}
                 </p>
@@ -258,43 +258,48 @@
         </div>
 
         <div class="divider my-2" />
-        <div class="flex gap-2 flex-wrap flex-col sm:flex-row">
+        <div class="flex flex-col sm:flex-row gap-2 flex-wrap">
           <button
-            on:click={undoLastProposal}
-            class="btn btn-sm btn-outline btn-warning"
+            onclick={undoLastProposal}
+            class="btn btn-sm btn-outline btn-warning transition-all hover:scale-105 active:scale-95"
+            aria-label="Undo the last applied proposal"
           >
             ↶ Undo Last
           </button>
           <button
-            on:click={resetAllProposals}
-            class="btn btn-sm btn-outline btn-error"
+            onclick={resetAllProposals}
+            class="btn btn-sm btn-outline btn-error transition-all hover:scale-105 active:scale-95"
+            aria-label="Clear all applied proposals"
           >
             🔄 Clear All
           </button>
           {#if showComparison}
             <button
-              on:click={() => (showComparison = false)}
-              class="btn btn-sm btn-outline btn-primary"
+              onclick={() => (showComparison = false)}
+              class="btn btn-sm btn-outline btn-primary transition-all hover:scale-105 active:scale-95"
+              aria-label="Hide budget comparison chart"
             >
               Hide Comparison
             </button>
           {:else}
             <button
-              on:click={() => (showComparison = true)}
-              class="btn btn-sm btn-primary"
+              onclick={() => (showComparison = true)}
+              class="btn btn-sm btn-primary transition-all hover:scale-105 active:scale-95"
+              aria-label="Show budget comparison chart"
             >
               Show Comparison
             </button>
           {/if}
           <button
-            on:click={() => (showSaveScenarioModal = true)}
-            class="btn btn-sm btn-secondary"
+            onclick={() => (showSaveScenarioModal = true)}
+            class="btn btn-sm btn-secondary transition-all hover:scale-105 active:scale-95"
+            aria-label="Save this proposal set as a named scenario"
           >
             📋 Save As Scenario
           </button>
         </div>
       </div>
-    </div>
+    </section>
   {/if}
 
   <!-- Comparison Chart -->
@@ -330,10 +335,10 @@
   {/if}
 
   <!-- Filters Section -->
-  <div class="card bg-base-200 shadow-md">
+  <section class="card bg-base-200 shadow-md" role="region" aria-label="Filter proposals">
     <div class="card-body">
-      <h2 class="card-title mb-4">Filter Proposals</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2 class="card-title mb-4 text-lg md:text-xl">Filter Proposals</h2>
+      <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="form-control">
           <label class="label" for="category-filter">
             <span class="label-text font-semibold">Category</span>
@@ -341,7 +346,8 @@
           <select
             id="category-filter"
             bind:value={categoryFilter}
-            class="select select-bordered"
+            class="select select-bordered focus:outline-2 focus:outline-primary focus:outline-offset-1"
+            aria-label="Filter proposals by budget category"
           >
             <option value="all">All Categories</option>
             {#each proposalCategories as cat}
@@ -357,26 +363,27 @@
           <select
             id="impact-filter"
             bind:value={impactFilter}
-            class="select select-bordered"
+            class="select select-bordered focus:outline-2 focus:outline-primary focus:outline-offset-1"
+            aria-label="Filter proposals by fiscal impact (costs vs savings)"
           >
             <option value="all">All Impacts</option>
             <option value="costs">Cost Increases</option>
             <option value="savings">Cost Savings</option>
           </select>
         </div>
-      </div>
-      <p class="text-sm text-base-content/60 mt-2">
+      </form>
+      <p class="text-sm text-base-content/60 mt-2" role="status" aria-live="polite">
         Showing {filteredProposals.length} of {proposals.length} proposals
       </p>
     </div>
-  </div>
+  </section>
 
   <!-- Proposals Grid -->
-  <div class="space-y-4">
-    <h2 class="text-2xl font-bold">Policy Proposals ({filteredProposals.length})</h2>
+  <section class="space-y-4">
+    <h2 class="text-2xl md:text-3xl font-bold">Policy Proposals ({filteredProposals.length})</h2>
 
     {#if filteredProposals.length === 0}
-      <div class="alert alert-info">
+      <div class="alert alert-info" role="status">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -453,17 +460,19 @@
               </div>
 
               <!-- Actions -->
-              <div class="card-actions justify-between mt-4">
+              <div class="card-actions justify-between mt-4 flex-col sm:flex-row gap-2">
                 <button
-                  on:click={() => (selectedProposal = proposal)}
-                  class="btn btn-ghost btn-xs"
+                  onclick={() => (selectedProposal = proposal)}
+                  class="btn btn-ghost btn-xs transition-all hover:scale-105 active:scale-95"
+                  aria-label="View details for {proposal.title}"
                 >
                   Details
                 </button>
                 <button
-                  on:click={() => applyProposal(proposal)}
+                  onclick={() => applyProposal(proposal)}
                   disabled={isApplied}
-                  class="btn btn-primary btn-sm"
+                  class="btn btn-primary btn-sm transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
+                  aria-label={isApplied ? 'Applied proposal' : `Apply ${proposal.title} proposal`}
                 >
                   {isApplied ? '✓ Applied' : 'Apply'}
                 </button>
@@ -473,10 +482,10 @@
         {/each}
       </div>
     {/if}
-  </div>
+  </section>
 
   <!-- Info Box -->
-  <div class="alert alert-info">
+  <section class="alert alert-info" role="region" aria-label="How to use proposals explorer">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -500,20 +509,22 @@
         </p>
       </div>
     </div>
-  </div>
+  </section>
 </div>
 
 <!-- Proposal Detail Modal -->
 {#if selectedProposal}
-  <div class="modal modal-open">
+  <div class="modal modal-open" role="dialog" aria-modal="true" aria-labelledby="proposal-modal-title">
     <div class="modal-box max-w-2xl">
       <button
-        on:click={() => (selectedProposal = null)}
+        onclick={() => (selectedProposal = null)}
+        onkeydown={(e) => e.key === 'Escape' && (selectedProposal = null)}
         class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+        aria-label="Close proposal details modal"
       >
         ✕
       </button>
-      <h3 class="font-bold text-lg mb-4">{selectedProposal.title}</h3>
+      <h3 class="font-bold text-lg mb-4" id="proposal-modal-title">{selectedProposal.title}</h3>
 
       <div class="space-y-4">
         <!-- Description -->
@@ -571,27 +582,36 @@
       </div>
 
       <!-- Actions -->
-      <div class="modal-action mt-6">
+      <div class="modal-action mt-6 flex-col sm:flex-row gap-2">
         <button
-          on:click={() => (selectedProposal = null)}
-          class="btn btn-outline"
+          onclick={() => (selectedProposal = null)}
+          class="btn btn-outline transition-all hover:scale-105 active:scale-95"
+          aria-label="Close this modal"
         >
           Close
         </button>
         <button
-          on:click={() => {
+          onclick={() => {
             if (selectedProposal) {
               applyProposal(selectedProposal);
               selectedProposal = null;
             }
           }}
-          class="btn btn-primary"
+          class="btn btn-primary transition-all hover:scale-105 active:scale-95"
+          aria-label="Apply this proposal to the budget"
         >
           Apply This Proposal
         </button>
       </div>
     </div>
-    <div on:click={() => (selectedProposal = null)} class="modal-backdrop" />
+    <div
+      onclick={() => (selectedProposal = null)}
+      onkeydown={(e) => e.key === 'Escape' && (selectedProposal = null)}
+      class="modal-backdrop cursor-pointer"
+      role="button"
+      tabindex="0"
+      aria-label="Close modal"
+    ></div>
   </div>
 {/if}
 
