@@ -4,6 +4,7 @@
   import { customBudget } from '$lib/budgetStore';
   import type { Category } from '$types';
   import Chart from 'chart.js/auto';
+  import SaveScenarioModal from '../scenarios/SaveScenarioModal.svelte';
 
   let budget = $state(mockBudget);
   let customBudgetState = $state({
@@ -21,6 +22,7 @@
   let comparisonChartCanvas: HTMLCanvasElement;
   let comparisonChartInstance: Chart;
   let saveMessage = $state('');
+  let showSaveScenarioModal = $state(false);
 
   onMount(() => {
     // Initialize chart
@@ -291,7 +293,7 @@
 
           <!-- Action Buttons -->
           <div class="divider my-4" />
-          <div class="flex gap-3 flex-wrap">
+          <div class="flex gap-3 flex-wrap flex-col sm:flex-row">
             <button
               on:click={handleReset}
               class="btn btn-outline btn-sm"
@@ -303,6 +305,12 @@
               class="btn btn-primary btn-sm"
             >
               💾 Save This Budget
+            </button>
+            <button
+              on:click={() => (showSaveScenarioModal = true)}
+              class="btn btn-secondary btn-sm"
+            >
+              📋 Save As Scenario
             </button>
             {#if saveMessage}
               <div class="alert alert-success alert-sm flex-1">
@@ -473,6 +481,15 @@
       </div>
     </div>
   </div>
+
+  <!-- Save Scenario Modal -->
+  {#if showSaveScenarioModal}
+    <SaveScenarioModal
+      currentBudgetAllocations={customBudgetState.allocations}
+      appliedProposalIds={[]}
+      onClose={() => (showSaveScenarioModal = false)}
+    />
+  {/if}
 </div>
 
 <style>

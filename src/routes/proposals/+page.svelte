@@ -5,6 +5,7 @@
   import { proposalsStore, type ProposalsState } from '$lib/proposalsStore';
   import type { Proposal } from '$types';
   import Chart from 'chart.js/auto';
+  import SaveScenarioModal from '../scenarios/SaveScenarioModal.svelte';
 
   let budget = $state(mockBudget);
   let proposals = $state(mockProposals);
@@ -28,6 +29,7 @@
   
   let successMessage = $state('');
   let selectedProposal = $state<Proposal | null>(null);
+  let showSaveScenarioModal = $state(false);
 
   // Subscribe to stores
   const unsubscribeCustom = customBudget.subscribe((state) => {
@@ -256,7 +258,7 @@
         </div>
 
         <div class="divider my-2" />
-        <div class="flex gap-2 flex-wrap">
+        <div class="flex gap-2 flex-wrap flex-col sm:flex-row">
           <button
             on:click={undoLastProposal}
             class="btn btn-sm btn-outline btn-warning"
@@ -284,6 +286,12 @@
               Show Comparison
             </button>
           {/if}
+          <button
+            on:click={() => (showSaveScenarioModal = true)}
+            class="btn btn-sm btn-secondary"
+          >
+            📋 Save As Scenario
+          </button>
         </div>
       </div>
     </div>
@@ -585,6 +593,15 @@
     </div>
     <div on:click={() => (selectedProposal = null)} class="modal-backdrop" />
   </div>
+{/if}
+
+<!-- Save Scenario Modal -->
+{#if showSaveScenarioModal}
+  <SaveScenarioModal
+    currentBudgetAllocations={customBudgetState.allocations}
+    appliedProposalIds={proposalsState.appliedProposals.map((p) => p.id)}
+    onClose={() => (showSaveScenarioModal = false)}
+  />
 {/if}
 
 
