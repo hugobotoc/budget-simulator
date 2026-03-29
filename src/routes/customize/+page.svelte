@@ -195,42 +195,46 @@
 </svelte:head>
 
 <div class="space-y-8">
-  <!-- Header -->
-  <div class="card bg-gradient-to-r from-green-500 to-teal-600 shadow-lg text-white">
-    <div class="card-body py-8">
-      <h1 class="card-title text-3xl">✏️ Budget Customizer</h1>
-      <p class="text-lg opacity-90">
+  <!-- Header Section -->
+  <section class="card bg-gradient-to-r from-green-500 to-teal-600 shadow-lg text-white">
+    <div class="card-body py-8 px-4 md:px-8">
+      <h1 class="card-title text-2xl md:text-3xl lg:text-4xl">✏️ Budget Customizer</h1>
+      <p class="text-base md:text-lg opacity-90">
         Adjust spending allocations and see the impact. Your total must equal 100%.
       </p>
     </div>
-  </div>
+  </section>
 
   <!-- Main Content Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Sliders Section -->
-    <div class="lg:col-span-2 space-y-4">
-      <div class="card bg-base-200 shadow-md">
+    <section class="lg:col-span-2 space-y-4">
+      <form class="card bg-base-200 shadow-md">
         <div class="card-body">
-          <h2 class="card-title mb-6">Adjust Allocations</h2>
+          <h2 class="card-title mb-6 text-xl md:text-2xl">Adjust Allocations</h2>
 
-          <!-- Progress Bar -->
+          <!-- Progress Bar with Accessibility -->
           <div class="mb-6 p-4 bg-base-100 rounded-lg">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-sm font-semibold">Total Allocation</span>
-              <span class="text-lg font-bold"
-                >{customBudgetState.total.toFixed(1)}%</span
-              >
+              <label for="total-progress" class="text-sm font-semibold">
+                Total Allocation
+              </label>
+              <span class="text-lg font-bold" aria-label="Current allocation percentage">
+                {customBudgetState.total.toFixed(1)}%
+              </span>
             </div>
             <progress
+              id="total-progress"
               class="progress progress-primary w-full"
               value={customBudgetState.total}
               max="100"
+              aria-label="Budget allocation progress"
             />
             {#if Math.abs(customBudgetState.total - 100) > 0.1}
-              <p class="text-xs text-warning mt-1">
+              <p class="text-xs text-warning mt-1" role="alert" aria-live="polite">
                 {customBudgetState.total > 100
-                  ? `Over by ${(customBudgetState.total - 100).toFixed(1)}%`
-                  : `Under by ${(100 - customBudgetState.total).toFixed(1)}%`}
+                  ? `Over budget by ${(customBudgetState.total - 100).toFixed(1)}%`
+                  : `Under budget by ${(100 - customBudgetState.total).toFixed(1)}%`}
               </p>
             {/if}
           </div>
@@ -293,49 +297,57 @@
 
           <!-- Action Buttons -->
           <div class="divider my-4" />
-          <div class="flex gap-3 flex-wrap flex-col sm:flex-row">
+          <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
             <button
+              type="button"
               on:click={handleReset}
-              class="btn btn-outline btn-sm"
+              class="btn btn-outline btn-sm transition-all hover:scale-105 active:scale-95"
+              aria-label="Reset allocation to current budget"
             >
               ↻ Reset to Current
             </button>
             <button
+              type="button"
               on:click={handleSave}
-              class="btn btn-primary btn-sm"
+              class="btn btn-primary btn-sm transition-all hover:scale-105 active:scale-95"
+              aria-label="Save this budget to local storage"
             >
               💾 Save This Budget
             </button>
             <button
+              type="button"
               on:click={() => (showSaveScenarioModal = true)}
-              class="btn btn-secondary btn-sm"
+              class="btn btn-secondary btn-sm transition-all hover:scale-105 active:scale-95"
+              aria-label="Save allocation as a named scenario"
             >
               📋 Save As Scenario
             </button>
             {#if saveMessage}
-              <div class="alert alert-success alert-sm flex-1">
+              <div class="alert alert-success alert-sm" role="status" aria-live="polite">
                 <span>{saveMessage}</span>
               </div>
             {/if}
           </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </section>
 
     <!-- Charts Section -->
-    <div class="space-y-4">
+    <section class="space-y-4">
       <!-- Custom Budget Pie Chart -->
       <div class="card bg-base-200 shadow-md">
         <div class="card-body">
-          <h3 class="card-title text-base">Your Budget Allocation</h3>
-          <canvas bind:this={chartCanvas} />
+          <h3 class="card-title text-base md:text-lg">Your Budget Allocation</h3>
+          <div class="w-full overflow-hidden">
+            <canvas bind:this={chartCanvas} role="img" aria-label="Pie chart showing your budget allocation percentages by category" />
+          </div>
         </div>
       </div>
 
       <!-- Comparison Stats -->
       <div class="card bg-base-200 shadow-md">
         <div class="card-body">
-          <h3 class="card-title text-base">Quick Stats</h3>
+          <h3 class="card-title text-base md:text-lg">Quick Stats</h3>
           <div class="space-y-2 text-sm">
             <div class="flex justify-between">
               <span>Total Budget</span>
@@ -387,34 +399,38 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 
   <!-- Comparison Chart -->
-  <div class="card bg-base-200 shadow-md">
+  <section class="card bg-base-200 shadow-md">
     <div class="card-body">
-      <h2 class="card-title mb-4">Current vs Your Custom Budget</h2>
-      <div class="max-h-96 overflow-x-auto">
-        <canvas bind:this={comparisonChartCanvas} />
+      <h2 class="card-title mb-4 text-lg md:text-2xl">Current vs Your Custom Budget</h2>
+      <div class="w-full overflow-x-auto">
+        <canvas
+          bind:this={comparisonChartCanvas}
+          role="img"
+          aria-label="Bar chart comparing current budget allocation to your custom budget allocation by category"
+        />
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Detailed Comparison Table -->
-  <div class="card bg-base-200 shadow-md">
+  <section class="card bg-base-200 shadow-md">
     <div class="card-body">
-      <h2 class="card-title mb-4">Detailed Breakdown</h2>
+      <h2 class="card-title mb-4 text-lg md:text-2xl">Detailed Breakdown</h2>
       <div class="overflow-x-auto">
-        <table class="table table-zebra w-full text-sm">
+        <table class="table table-zebra w-full text-sm" role="table" aria-label="Detailed budget comparison table">
           <thead>
             <tr>
-              <th>Category</th>
-              <th class="text-right">Current %</th>
-              <th class="text-right">Your %</th>
-              <th class="text-right">Change</th>
-              <th class="text-right">Current ($B)</th>
-              <th class="text-right">Your ($B)</th>
-              <th class="text-right">Difference</th>
+              <th scope="col">Category</th>
+              <th scope="col" class="text-right">Current %</th>
+              <th scope="col" class="text-right">Your %</th>
+              <th scope="col" class="text-right">Change</th>
+              <th scope="col" class="text-right">Current ($B)</th>
+              <th scope="col" class="text-right">Your ($B)</th>
+              <th scope="col" class="text-right">Difference</th>
             </tr>
           </thead>
           <tbody>
@@ -456,31 +472,32 @@
         </table>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Info Box -->
-  <div class="alert alert-info">
+  <section class="alert alert-info" role="region" aria-label="How budget customizer works">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       class="stroke-current shrink-0 w-6 h-6"
+      aria-hidden="true"
     >
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="2"
         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      /></svg>
+      />
+    </svg>
     <div>
-      <h3 class="font-bold">How it works</h3>
-      <div class="text-sm">
-        Adjust the sliders to change spending allocations. Your total allocation must equal 100%.
-        The system will automatically rebalance other categories if needed. Click "Save This Budget"
-        to store your scenario locally.
+      <h3 class="font-bold text-base md:text-lg">How it works</h3>
+      <div class="text-sm leading-relaxed">
+        <p class="mb-2">Adjust the sliders to change spending allocations. Your total allocation must equal 100%.</p>
+        <p>The system will automatically rebalance other categories if needed. Click "Save This Budget" to store your scenario locally.</p>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Save Scenario Modal -->
   {#if showSaveScenarioModal}
