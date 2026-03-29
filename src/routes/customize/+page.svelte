@@ -136,7 +136,8 @@
           tooltip: {
             callbacks: {
               label: function (context) {
-                return `${context.dataset.label}: ${context.parsed.x.toFixed(1)}%`;
+                const value = (context.parsed?.x ?? 0) as number;
+                return `${context.dataset.label}: ${value.toFixed(1)}%`;
               }
             }
           }
